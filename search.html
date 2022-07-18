@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        th{
+            border: 1px solid black;
+            margin: 1px 1px 1px 1px;
+            background-color: blue;
+            color: white;
+            font-size: 20px;
+        }
+        tr{
+            background-color: lightgreen ;
+            font-size: 18px;
+        }
+        nav>a{
+            background-color: lightskyblue;
+            padding: 10px 20px 10px 20px;
+            cursor: pointer;
+            font-size: 25px;
+            text-decoration: none;
+        }
+        #searchbox{
+            margin: 30px 0px;
+            height:20px;
+            width: 300px;
+
+        }
+        button{
+            padding: 5px 20px;
+            background-color: blue;
+            color: white;
+            cursor: pointer;
+            border-radius: 10px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="search.html">search</a>
+    </nav>
+    <input id="searchbox" type="text" placeholder="Enter name of Brewery" value="">
+    <button onclick="fun()" >search</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Brewery_type</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Country</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <script>
+    let tbody = document.querySelector("tbody")
+    console.log(tbody)
+    var url = "https://api.openbrewerydb.org/breweries"
+    fetch(url,{
+        method:"GET"
+    })
+    .then((res)=>{
+        return res.json();
+    })
+    .then((response)=>{
+        localStorage.setItem("Array",JSON.stringify(response))
+        
+    })
+</script>
+    <script>
+        function fun(){
+        var inp = document.querySelector("#searchbox").value
+        var Array = localStorage.getItem("Array")
+        Array = JSON.parse(Array)
+        for(let i=0;i<Array.length;i++){
+            if(Array[i].name==inp){
+                var tr = document.createElement("tr")
+                var tag1 = document.createElement("td")
+                var tag2 = document.createElement("td")
+                var tag3 = document.createElement("td")
+                var tag4 = document.createElement("td")
+                var tag5 = document.createElement("td")
+                var tag6 = document.createElement("td")
+                tag1.innerText = Array[i].id
+                tag2.innerText = Array[i].name
+                tag3.innerText = Array[i].brewery_type
+                tag4.innerText = Array[i].city
+                tag5.innerText = Array[i].state
+                tag6.innerText = Array[i].country
+                tr.append(tag1,tag2,tag3,tag4,tag5,tag6)
+                document.querySelector("tbody").append(tr)
+            }
+        }
+        
+        }
+
+        
+    </script>
+</body>
+</html>
